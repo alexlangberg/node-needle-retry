@@ -1,0 +1,46 @@
+{
+  "name": "needle-retry",
+  "version": "1.0.0",
+  "description": "Make needle retry automatically on failed requests.",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "devDependencies": {
+    "covert": "^1.1.0",
+    "doctoc": "^0.15.0",
+    "eslint": "^1.6.0",
+    "faucet": "0.0.1",
+    "tape": "^4.2.1",
+    "watch": "^0.16.0"
+  },
+  "scripts": {
+    "test": "node test/*.js | faucet",
+    "lint": "eslint lib test || true",
+    "coverage": "covert test/*.js || true",
+    "watch": "watch 'clear && npm run lint && npm test && npm run coverage' lib test",
+    "doctoc": "doctoc --github --title \"# Changelog\" CHANGELOG.md",
+    "patch": "npm version patch",
+    "minor": "npm version minor",
+    "major": "npm version major"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexlangberg/needle-retry.git"
+  },
+  "keywords": [
+    "needle",
+    "retry"
+  ],
+  "author": "Alex Langberg",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alexlangberg/needle-retry/issues"
+  },
+  "homepage": "https://github.com/alexlangberg/needle-retry#readme",
+  "dependencies": {
+    "needle": "^0.10.0",
+    "ramda": "^0.17.1",
+    "retry": "^0.8.0"
+  }
+}
