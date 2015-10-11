@@ -12,7 +12,7 @@ npm install needle-retry
 ```
 
 ## Options
-Options can be optionally passed in as the second parameter, as an object with a property ```needle``` for needle options and a property ```retry``` for retry options. This module has a single option, ```fullDocument``` that will make it retry if a full HTML document is not received and defaults to ```false```. For instance the default options:
+Options can be passed in as the second parameter, as an object with a property ```needle``` for needle options and a property ```retry``` for retry options. This module has a single option, ```fullDocument``` that will make it retry if a full HTML document is not received and defaults to ```false```. For instance the default options:
 
 ```javascript
 var options = {
@@ -20,8 +20,7 @@ var options = {
         fullDocument: false
     },
     needle: {
-        follow_max: 20,
-        read_timeout: 120000
+        follow_max: 20
     },
     retry: {
         retries: 5
