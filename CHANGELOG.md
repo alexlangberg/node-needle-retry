@@ -6,6 +6,6 @@
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-### v1.0.0
+### v1.0.0 (2015-10-11)
 
- * Initial commit.
+ * First release.
