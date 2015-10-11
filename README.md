@@ -32,9 +32,9 @@ Have a look at their respective doc pages for [needle](https://www.npmjs.org/pac
 
 ## Example
 ```javascript
-var needle = require('needle-retry');
+var needle = require('./');
 
-needle.get('http://www.google.com', function(error, response) {
-  console.log(response);
+needle.get('http://www.github.com', function(error, response) {
+  console.log(response.body);
 });
 ```
