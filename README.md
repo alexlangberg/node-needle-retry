@@ -38,3 +38,28 @@ needle.get('http://www.github.com', function(error, response) {
   console.log(response.body);
 });
 ```
+
+## Example request
+```javascript
+var needle = require('./');
+
+var options = {
+    needleRetry: {
+        fullDocument: false
+    },
+    needle: {
+        follow_max: 20
+    },
+    retry: {
+        retries: 5
+    }
+}
+
+var data = {
+    foo: 'bar'
+}
+
+needle.request('get', 'http://www.github.com', data, options, function(error, response) {
+  console.log(response.body);
+});
+```
