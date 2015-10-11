@@ -40,7 +40,7 @@
   "homepage": "https://github.com/alexlangberg/needle-retry#readme",
   "dependencies": {
     "needle": "^0.10.0",
-    "ramda": "^0.17.1",
+    "ramda": "^0.18.0",
     "retry": "^0.8.0"
   }
 }
