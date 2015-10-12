@@ -12,7 +12,7 @@ npm install needle-retry
 ```
 
 ## Options
-Options can be passed in as the second parameter, as an object with a property ```needle``` for needle options and a property ```retry``` for retry options. This module has a single option, ```fullDocument``` that will make it retry if a full HTML document is not received and defaults to ```false```. For instance the default options:
+Options can be passed in as the second parameter, as an object with a property ```needle``` for needle options and a property ```retry``` for retry options. This module has a single option, ```fullDocument``` that will make it retry if a full HTML document is not received. Defaults to ```false```. Default options:
 
 ```javascript
 var options = {
@@ -28,11 +28,11 @@ var options = {
 }
 ```
 
-Have a look at their respective doc pages for [needle](https://www.npmjs.org/package/needle) and [retry](https://www.npmjs.org/package/retry) for options available.
+Have a look at the respective doc pages for [needle](https://www.npmjs.org/package/needle) and [retry](https://www.npmjs.org/package/retry) for a list of available options.
 
 ## Example
 ```javascript
-var needle = require('./');
+var needle = require('needle-retry');
 
 needle.get('http://www.github.com', function(error, response) {
   console.log(response.body);
@@ -41,7 +41,7 @@ needle.get('http://www.github.com', function(error, response) {
 
 ## Example request
 ```javascript
-var needle = require('./');
+var needle = require('needle-retry');
 
 var options = {
     needleRetry: {
