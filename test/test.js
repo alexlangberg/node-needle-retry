@@ -189,7 +189,7 @@ test('it handles errors from needle (2)', function(t) {
 
   nr.get(url, options, function(error) {
     t.equal(error.errno, 'ENOTFOUND');
-    t.equal(error.host, 'foo');
+    t.equal(error.hostname, 'foo');
   });
 });
 
