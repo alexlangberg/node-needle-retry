@@ -12,6 +12,7 @@
     "eslint": "^1.6.0",
     "faucet": "0.0.1",
     "tape": "^4.2.1",
+    "querystring": "^0.2.0",
     "watch": "^0.16.0"
   },
   "scripts": {

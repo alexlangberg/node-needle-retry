@@ -3,6 +3,8 @@
 var test = require('tape');
 var http = require('http');
 var R = require('ramda');
+var querystring = require('querystring');
+
 var nr = require('../');
 
 var serverUrl = 'http://localhost:1337';
@@ -21,36 +23,62 @@ test('setup', function(t) {
   server = http.createServer(function(request, response) {
     var code = request.url.substring(1);
 
-    if (request.url === '/200') {
-      response.writeHead(code, {'Content-Type': 'text/plain'});
-      response.end('<p>Hello World</p>');
-    }
-
-    if (request.url === '/301' || request.url === '/302') {
-      response.writeHead(code, {'Content-Type': 'text/plain'});
-      response.end('<p>Not found</p>');
-    }
-
-    if (request.url === '/404') {
-      response.writeHead(code, {'Content-Type': 'text/plain'});
-      response.end('<p>Not found</p>');
-    }
-
-    if (request.url === '/thirdtimeacharm') {
-      if (failures < 2) {
-        failures++;
-        response.writeHead(500, {'Content-Type': 'text/plain'});
-        response.end('<p>Server error!</p>');
-      } else {
-        response.writeHead(200, {'Content-Type': 'text/plain'});
+    if (request.method === 'GET') {
+      if (request.url === '/200') {
+        response.writeHead(code, {'Content-Type': 'text/plain'});
         response.end('<p>Hello World</p>');
+      }
+
+      if (request.url === '/301' || request.url === '/302') {
+        response.writeHead(code, {'Content-Type': 'text/plain'});
+        response.end('<p>Not found</p>');
+      }
+
+      if (request.url === '/404') {
+        response.writeHead(code, {'Content-Type': 'text/plain'});
+        response.end('<p>Not found</p>');
+      }
+
+      if (request.url === '/thirdtimeacharm') {
+        if (failures < 2) {
+          failures++;
+          response.writeHead(500, {'Content-Type': 'text/plain'});
+          response.end('<p>Server error!</p>');
+        } else {
+          response.writeHead(200, {'Content-Type': 'text/plain'});
+          response.end('<p>Hello World</p>');
+        }
+      }
+
+      if (request.url === '/onlyfulldocument') {
+        response.writeHead(200, {'Content-Type': 'text/plain'});
+        response.end('<html><body><p>Incomplete</p>');
+      }
+    } else if (request.method === 'PUT') {
+      if (request.url === '/200' || request.url === '/201') {
+        var fullBody = '';
+        request.on('data', function(chunk) {
+          fullBody += chunk.toString();
+        });
+
+        request.on('end', function() {
+          var decodedBody = querystring.parse(fullBody);
+
+          response.writeHead(code, {'Content-Type': 'application/json'});
+          response.end(JSON.stringify(decodedBody));
+        });
+      }
+    } else if (request.method === 'DELETE') {
+      if (request.url === '/200') {
+        response.writeHead(code, {'Content-Type': 'text/plain'});
+        response.end('<p>Deleted</p>');
+      }
+      if (request.url === '/204') {
+        response.writeHead(code, {'Content-Type': 'text/plain'});
+        response.end('<p>No Content</p>');
       }
     }
 
-    if (request.url === '/onlyfulldocument') {
-      response.writeHead(200, {'Content-Type': 'text/plain'});
-      response.end('<html><body><p>Incomplete</p>');
-    }
   }).listen(1337);
 
   server.on('listening', function() {
@@ -90,11 +118,78 @@ test('it can request with get', function(t) {
   });
 });
 
+test('it can PUT', function(t) {
+  var data = { a: "foo", b: "bar"};
+  t.plan(3);
+
+  nr.put(url, data, defaultOptions, function(error, response, body) {
+    t.equal(error, null);
+    t.equal(response.statusCode, 200);
+    t.deepEqual(body, data);
+  });
+});
+
+test('it can PUT (2)', function(t) {
+  var data = { a: "foo", b: "bar"};
+  t.plan(3);
+  var url = serverUrl + '/201';
+  nr.put(url, data, defaultOptions, function(error, response, body) {
+    t.equal(error, null);
+    t.equal(response.statusCode, 201);
+    t.deepEqual(body, data);
+  });
+});
+
+test('it can request with PUT', function(t) {
+  var data = { a: "foo", b: "bar"};
+  t.plan(3);
+  nr.request('PUT', url, data, defaultOptions, function(error, response, body) {
+    t.equal(error, null);
+    t.equal(response.statusCode, 200);
+    t.deepEqual(body, data);
+  });
+});
+
+test('it can DELETE', function(t) {
+  t.plan(3);
+  var url = serverUrl + '/200';
+  nr.delete(url, null, defaultOptions, function(error, response, body) {
+    t.equal(error, null);
+    t.equal(response.statusCode, 200);
+    t.equal(body, '<p>Deleted</p>');
+  });
+});
+
+test('it can DELETE (2)', function(t) {
+  t.plan(3);
+  var url = serverUrl + '/204';
+  nr.delete(url, null, defaultOptions, function(error, response, body) {
+    t.equal(error, null);
+    t.equal(response.statusCode, 204);
+    t.equal(body, '<p>No Content</p>');
+  });
+});
+
 test('it handles errors from needle', function(t) {
   t.plan(1);
 
   nr.get('foo', defaultOptions, function(error) {
     t.equal(error.errno, 'ENOTFOUND');
+  });
+});
+
+test('it handles errors from needle (2)', function(t) {
+  t.plan(2);
+
+  var options = R.merge(defaultOptions, {
+    'needle': {
+      'proxy': 'foo'
+    }
+  });
+
+  nr.get(url, options, function(error) {
+    t.equal(error.errno, 'ENOTFOUND');
+    t.equal(error.host, 'foo');
   });
 });
 
