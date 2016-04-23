@@ -8,12 +8,12 @@
   },
   "devDependencies": {
     "covert": "^1.1.0",
-    "doctoc": "^0.15.0",
-    "eslint": "^1.6.0",
+    "doctoc": "^1.0.0",
+    "eslint": "^2.8.0",
     "faucet": "0.0.1",
-    "tape": "^4.2.1",
     "querystring": "^0.2.0",
-    "watch": "^0.16.0"
+    "tape": "^4.5.1",
+    "watch": "^0.17.1"
   },
   "scripts": {
     "test": "node test/*.js | faucet",
@@ -40,8 +40,8 @@
   },
   "homepage": "https://github.com/alexlangberg/needle-retry#readme",
   "dependencies": {
-    "needle": "^0.11.0",
-    "ramda": "^0.18.0",
-    "retry": "^0.8.0"
+    "needle": "^1.0.0",
+    "ramda": "^0.21.0",
+    "retry": "^0.9.0"
   }
 }

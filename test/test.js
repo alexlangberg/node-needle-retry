@@ -75,7 +75,7 @@ test('setup', function(t) {
       }
       if (request.url === '/204') {
         response.writeHead(code, {'Content-Type': 'text/plain'});
-        response.end('<p>No Content</p>');
+        response.end('');
       }
     }
 
@@ -166,7 +166,7 @@ test('it can DELETE (2)', function(t) {
   nr.delete(url, null, defaultOptions, function(error, response, body) {
     t.equal(error, null);
     t.equal(response.statusCode, 204);
-    t.equal(body, '<p>No Content</p>');
+    t.equal(body, '');
   });
 });
 
